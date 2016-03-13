@@ -100,7 +100,7 @@ function getFirstChar(value) {
  *   '\tHello, World! ' => 'Hello, World!'
  */
 function removeLeadingAndTrailingWhitespaces(value) {
-    return value.replace(/\s+(.+)|\\.(.+)\s+/, '$1');
+    return value.replace(/\s+/, '').replace(/(\s+)$/, '');
 }
 
 /**
@@ -215,17 +215,17 @@ function getRectangleString(width, height) {
         myWidth = '';
 
     for(var x=width; x--;){
-        if(x==width){
+        if(x+1===width){
             rectangle += '┌';
             myWidth += '└';
-            myHeight += '|';
-        }else if(x==0){
+            myHeight += '│';
+        }else if(x===0){
             rectangle += '┐\n';
-            myHeight += '|\n';
+            myHeight += '│\n';
             myWidth += '┘\n';
 
             for(var y=height-1; y--;){
-                if(y>1){
+                if(y>0){
                     rectangle += myHeight;
                 }else{
                     rectangle += myWidth;
@@ -234,7 +234,7 @@ function getRectangleString(width, height) {
         }else{
             rectangle += '─';
             myHeight += ' ';
-            myWidth = '─';
+            myWidth += '─';
         }
     }
 
@@ -258,7 +258,24 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-    throw new Error('Not implemented');
+
+    var letters;
+
+    for(var x=0; x<str.length; x++){
+
+        if(str[x]==[A-z]){
+                 var letCode = str.charCodeAt(x);
+            if(letCode<78 || letCode<110 & letCode>91){
+                letters += String.fromCharCode(letCode+13);
+            }else{
+                letters += String.fromCharCode(letCode-13);
+            }
+        }else{
+            letters += str[x];
+        }
+    }
+
+    return letters;
 }
 
 /**
@@ -275,7 +292,13 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-    throw new Error('Not implemented');
+
+    if(typeof value === 'string' || value instanceof String){
+        return true;
+    }else{
+        return false;
+    }
+
 }
 
 
@@ -304,7 +327,13 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-    throw new Error('Not implemented');
+
+    var card = ['A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣',
+                'A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦',
+                'A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥',
+                'A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'];
+
+    return card.indexOf(value);
 }
 
 
