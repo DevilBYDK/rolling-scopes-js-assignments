@@ -115,14 +115,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
  *   'cat', 3 => 'catcatcat'
  */
 function repeatString(value, count) {
-
-    var str = '';
-
-    for(var x=count;x--;){
-        str += value;
-    }
-
-    return str;
+    return value.repeat(count);
 }
 
 /**
@@ -210,34 +203,9 @@ function extractEmails(str) {
  */
 function getRectangleString(width, height) {
 
-    var rectangle = '',
-        myHeight ='',
-        myWidth = '';
-
-    for(var x=width; x--;){
-        if(x+1===width){
-            rectangle += '┌';
-            myWidth += '└';
-            myHeight += '│';
-        }else if(x===0){
-            rectangle += '┐\n';
-            myHeight += '│\n';
-            myWidth += '┘\n';
-
-            for(var y=height-1; y--;){
-                if(y>0){
-                    rectangle += myHeight;
-                }else{
-                    rectangle += myWidth;
-                }
-            }
-        }else{
-            rectangle += '─';
-            myHeight += ' ';
-            myWidth += '─';
-        }
-    }
-
+    var rectangle = '┌'+'─'.repeat(width-2)+'┐\n'
+                    +('│'+' '.repeat(width-2)+'│\n').repeat(height-2)
+                    +'└' + '─'.repeat(width-2) + '┘\n';
     return rectangle;
 }
 
@@ -259,23 +227,9 @@ function getRectangleString(width, height) {
  */
 function encodeToRot13(str) {
 
-    var letters;
-
-    for(var x=0; x<str.length; x++){
-
-        if(str[x]==[A-z]){
-                 var letCode = str.charCodeAt(x);
-            if(letCode<78 || letCode<110 & letCode>91){
-                letters += String.fromCharCode(letCode+13);
-            }else{
-                letters += String.fromCharCode(letCode-13);
-            }
-        }else{
-            letters += str[x];
-        }
-    }
-
-    return letters;
+    return str.replace(/[a-z]/gi, function(letter) {
+        return String.fromCharCode(letter.toUpperCase()>'M'?letter.charCodeAt(0)-13:letter.charCodeAt(0)+13);
+    });
 }
 
 /**
@@ -327,13 +281,11 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-
-    var card = ['A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣',
-                'A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦',
-                'A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥',
-                'A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'];
-
-    return card.indexOf(value);
+    debugger;
+    var card = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'],
+        suit = ['♣', '♦', '♥', '♠'],
+        index = card.indexOf(value.slice(0, value.length-1))+suit.indexOf(value[value.length-1])*13;
+    return index;
 }
 
 
