@@ -403,11 +403,7 @@ describe('04-arrays-tasks', function() {
 
 
     it.optional('get3TopItems should return the 3 largest items from integer array', function () {
-        [
-            {
-                arr:      [],
-                expected: []
-             }, {
+        [ {
                  arr:      [ 1,2 ],
                  expected: [ 2,1 ]
             }, {
