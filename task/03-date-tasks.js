@@ -22,7 +22,7 @@
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
 function parseDataFromRfc2822(value) {
-   throw new Error('Not implemented');
+    return new Date(value);
 }
 
 /**
@@ -30,14 +30,14 @@ function parseDataFromRfc2822(value) {
  * For ISO 8601 date specification refer to : https://en.wikipedia.org/wiki/ISO_8601
  *
  * @param {string} value
- * @return {date}
+ * @return {Date}
  *
  * @example :
  *    '2016-01-19T16:07:37+00:00'    => Date()
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-   throw new Error('Not implemented');
+    return new Date(value);
 }
 
 
@@ -46,7 +46,7 @@ function parseDataFromIso8601(value) {
  * Please find algorithm here: https://en.wikipedia.org/wiki/Leap_year#Algorithm
  *
  * @param {date} date
- * @return {bool}
+ * @return {boolean}
  *
  * @example :
  *    Date(1900,1,1)    => false
@@ -56,7 +56,8 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-   throw new Error('Not implemented');
+    var year = date.getFullYear();
+    return year % 4 === 0 & year % 100 !== 0 | year % 400 === 0 ? true : false;
 }
 
 
@@ -76,14 +77,14 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-   throw new Error('Not implemented');
+    return new Date(endDate - startDate).toISOString().slice(11, 23);
 }
 
 
 /**
  * Returns the angle (in radians) between the hands of an analog clock for the specified Greenwich time.
  * If you have problem with solution please read: https://en.wikipedia.org/wiki/Clock_angle_problem
- * 
+ *
  * @param {date} date
  * @return {number}
  *
@@ -94,7 +95,10 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
+    var hours = date.getUTCHours() > 13 ? date.getUTCHours() - 12 : date.getUTCHours(),
+        minutes = date.getMinutes(),
+        degree = Math.abs((hours * 30 + minutes * 0.5) - (minutes * 6));
+    return Math.PI * Math.min(degree, 360 - degree) / 180;
 }
 
 
