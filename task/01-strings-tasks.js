@@ -42,7 +42,7 @@ function getStringLength(value) {
 }
 
 /**
- * Returns the result of string tepmlate and given parameters firstName and lastName.
+ * Returns the result of string template and given parameters firstName and lastName.
  * Please do not use concatenation, use template string :
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings
  *
@@ -61,8 +61,7 @@ function getStringFromTemplate(firstName, lastName) {
 /**
  * Extracts a name from template string 'Hello, First_Name Last_Name!'.
  *
- * @param {string} firstName
- * @param {string} lastName
+ * @param {string} value
  * @return {string}
  *
  * @example
