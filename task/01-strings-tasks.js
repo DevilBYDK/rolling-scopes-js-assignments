@@ -225,9 +225,8 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-
     return str.replace(/[a-z]/gi, function(letter) {
-        return String.fromCharCode(letter.toUpperCase()>'M'?letter.charCodeAt(0)-13:letter.charCodeAt(0)+13);
+        return String.fromCharCode(letter.toUpperCase()>'M' ? letter.charCodeAt(0)-13 : letter.charCodeAt(0)+13);
     });
 }
 
@@ -246,7 +245,7 @@ function encodeToRot13(str) {
  */
 function isString(value) {
 
-    if(typeof value === 'string' || value instanceof String){
+    if(typeof value==='string' || value instanceof String){
         return true;
     }else{
         return false;
