@@ -729,8 +729,8 @@ describe('04-arrays-tasks', function() {
         ].forEach(data => {
             var actual = tasks.group(data.arr, data.keySelector, data.valueSelector);
             assert.deepEqual(
-                data.expected,
-                actual
+                Array.from(data.expected),
+                Array.from(actual)
             );
         });
     });

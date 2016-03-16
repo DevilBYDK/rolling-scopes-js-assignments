@@ -2,7 +2,8 @@
 
 /**
  * Returns true if word occurrs in the specified word snaking puzzle.
- * Each words can be constructed using "snake" path inside a grid with top, left, right and bottom directions
+ * Each words can be constructed using "snake" path inside a grid with top, left, right and bottom directions.
+ * Each char can be used only once ("snake" should not cross itself).
  *
  * @param {array} puzzle
  * @param {array} searchStr

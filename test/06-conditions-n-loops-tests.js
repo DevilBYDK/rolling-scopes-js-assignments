@@ -585,15 +585,15 @@ describe('06-conditions-n-loops-tasks', function() {
             },{
                 startDate: '2000-01-01 00:00:00.000',
                 endDate:   '2000-12-12 00:00:00.000',
-                expected:  'an year ago'
+                expected:  'a year ago'
             },{
                 startDate: '2000-01-01 00:00:00.000',
                 endDate:   '2001-02-15 00:00:00.001',
-                expected:  'an year ago'
+                expected:  'a year ago'
             },{
                 startDate: '2000-01-01 00:00:00.000',
                 endDate:   '2001-06-01 00:00:00.001',
-                expected:  'an year ago'
+                expected:  'a year ago'
             },{
                 startDate: '2000-01-01 00:00:00.000',
                 endDate:   '2015-02-15 00:00:00.001',

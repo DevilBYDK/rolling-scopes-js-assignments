@@ -103,6 +103,8 @@ function isTriangle(a,b,c) {
  *     ------------- 
  *        width=20    
  * 
+ * NOTE: Please use canvas coordinate space (https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes#The_grid),
+ * it differs from Cartesian coordinate system.
  * 
  * @param {object} rect1
  * @param {object} rect2
