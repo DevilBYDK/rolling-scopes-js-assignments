@@ -31,7 +31,7 @@
  * @return {RegExp}
  */
 function getRegexForGuid() {
-   return /{[\d a-f]{8}-[\d a-f]{4}-[\d a-f]{4}-[\d a-f]{4}-[\d a-f]{12}}/i;
+   return /^{[\d a-f]{8}-([\d a-f]{4}-){3}[\d a-f]{12}}$/i;
 }
 
 
