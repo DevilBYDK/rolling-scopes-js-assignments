@@ -459,7 +459,7 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-    var array = new Array(end - start + 1).fill(0).map((x, ind)=> ind === 0 ? x : arr[ind + 1] = x + 1);
+    var array = new Array(end - start + 1).fill(start).map((x, ind, arr)=> x + ind);
     return array;
 }
 
