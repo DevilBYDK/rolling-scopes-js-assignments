@@ -33,7 +33,17 @@
  *
  */
 function* get99BottlesOfBeer() {
-    throw new Error('Not implemented');
+    var bottles = 99;
+    while (bottles>2) {
+        yield `${bottles} bottles of beer on the wall, ${bottles} bottles of beer.`;
+        yield `Take one down and pass it around, ${--bottles} bottles of beer on the wall.`;
+    }
+    yield '2 bottles of beer on the wall, 2 bottles of beer.';
+    yield 'Take one down and pass it around, 1 bottle of beer on the wall.';
+    yield '1 bottle of beer on the wall, 1 bottle of beer.';
+    yield 'Take one down and pass it around, no more bottles of beer on the wall.';
+    yield 'No more bottles of beer on the wall, no more bottles of beer.';
+    yield 'Go to the store and buy some more, 99 bottles of beer on the wall.';
 }
 
 
@@ -47,7 +57,15 @@ function* get99BottlesOfBeer() {
  *
  */
 function* getFibonacciSequence() {
-    throw new Error('Not implemented');
+    let a = 0,
+        b = 1,
+        c = 0;
+    while(true) {
+        c = a;
+        a = b;
+        b = c+a;
+        yield c;
+    }
 }
 
 
@@ -82,8 +100,18 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let source = [root];
+    while (source.length) {
+        let node = source.pop();
+        yield node;
+        if (node.children) {
+            for(let x = node.children.length; x--;) {
+                source.push(node.children[x]);
+            }
+        }
+    }
 }
+
 
 
 /**
@@ -108,7 +136,16 @@ function* depthTraversalTree(root) {
  *
  */
 function* breadthTraversalTree(root) {
-    throw new Error('Not implemented');
+    let source = [root];
+    for (let node of source) {
+        yield node;
+        if (node.children) {
+            for(let child of node.children) {
+                source.push(child);
+            }
+        }
+    }
+
 }
 
 
@@ -126,7 +163,12 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-    throw new Error('Not implemented');
+    let x = 0;
+    while(source1.length||source2.length){
+        yield source1[x]>source2[x]?source2[x]:source1[x];
+        yield source1[x]>source2[x]?source1[x]:source2[x];
+        x++;
+    }
 }
 
 
