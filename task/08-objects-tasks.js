@@ -110,43 +110,43 @@ function fromJSON(proto, json) {
 
 const cssSelectorBuilder = {
     element: function(value) {
-        return new CSS().element(value);
+        return new cssSelector().element(value);
     },
 
     id: function(value) {
-        return new CSS().id(value);
+        return new cssSelector().id(value);
     },
 
     class: function(value) {
-        return new CSS().class(value);
+        return new cssSelector().class(value);
     },
 
     attr: function(value) {
-        return new CSS().attr(value);
+        return new cssSelector().attr(value);
     },
 
     pseudoClass: function(value) {
-        return new CSS().pseudoClass(value);
+        return new cssSelector().pseudoClass(value);
     },
 
     pseudoElement: function(value) {
-        return new CSS().pseudoElement(value);
+        return new cssSelector().pseudoElement(value);
     },
 
     combine: function(selector1, combinator, selector2) {
-        return new Selector(selector1.stringify()+` ${combinator} `+selector2.stringify());
+        return new SelectorStr(selector1.stringify()+` ${combinator} `+selector2.stringify());
     }
 };
 
-class Selector {
+class SelectorStr {
     constructor(value) {
         this.str = value || '';
-        this.errors = { element: false,
-                        id: false,
-                        class: false,
-                        attr: false,
-                        pseudoClass: false,
-                        pseudoElement: false };
+        this.listSelector = { element: false,
+                              id: false,
+                              class: false,
+                              attr: false,
+                              pseudoClass: false,
+                              pseudoElement: false };
     }
 
     stringify() {
@@ -154,62 +154,61 @@ class Selector {
     }
 }
 
-class CSS extends Selector {
+class cssSelector extends SelectorStr {
     element(value) {
-        errCheck('element', this.errors);
-        this.errors.element = true;
+        errCheck('element', this.listSelector);
+        this.listSelector.element = true;
         this.str += value;
         return this;
     }
 
     id(value) {
-        errCheck('id', this.errors);
-        this.errors.id = true;
+        errCheck('id', this.listSelector);
+        this.listSelector.id = true;
         this.str += `#${value}`;
         return this;
     }
 
     class(value) {
-        errCheck('class', this.errors);
-        this.errors.class = true;
+        errCheck('class', this.listSelector);
+        this.listSelector.class = true;
         this.str += `.${value}`;
         return this;
     }
 
     attr(value) {
-        errCheck('attr', this.errors);
-        this.errors.attr = true;
+        errCheck('attr', this.listSelector);
+        this.listSelector.attr = true;
         this.str += `[${value}]`;
         return this;
     }
 
     pseudoClass(value) {
-        errCheck('pseudoClass', this.errors);
-        this.errors.pseudoClass = true;
+        errCheck('pseudoClass', this.listSelector);
+        this.listSelector.pseudoClass = true;
         this.str += `:${value}`;
         return this;
     }
 
     pseudoElement(value) {
-        errCheck('pseudoElement', this.errors);
-        this.errors.pseudoElement = true;
+        errCheck('pseudoElement', this.listSelector);
+        this.listSelector.pseudoElement = true;
         this.str += `::${value}`;
         return this;
     }
 }
 
 function errCheck (elem, list) {
-    debugger;
     let x = false;
     const message = ['Element, id and pseudo-element should not occur more then one time inside the selector',
     'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element'];
+
     if(list[elem] && elem!=='class' && elem!=='pseudoClass' && elem!=='attr') {
         throw new Error(message[0]);
     }
     for(let y in list) {
         if(y===elem) {
             x = true;
-            console.log(x);
         }else if(x && list[y]){
             throw new Error(message[1]);
         }
