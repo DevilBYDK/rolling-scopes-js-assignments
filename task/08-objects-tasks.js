@@ -25,8 +25,10 @@
 function Rectangle(width, height) {
     this.width   = width;
     this.height  = height;
-    this.__proto__.getArea = () => this.width * this.height;
 }
+
+Rectangle.prototype.getArea = function () {
+        return this.width * this.height;};
 
 
 /**
@@ -138,64 +140,65 @@ const cssSelectorBuilder = {
     }
 };
 
-class SelectorStr {
-    constructor(value) {
-        this.str = value || '';
-        this.listSelector = { element: false,
-                              id: false,
-                              class: false,
-                              attr: false,
-                              pseudoClass: false,
-                              pseudoElement: false };
+function SelectorStr(str) {
+    this.str = str||'';
+    this.listSelector = { element: false,
+                          id: false,
+                          class: false,
+                          attr: false,
+                          pseudoClass: false,
+                          pseudoElement: false };
+
+    this.stringify = function() { return this.str;};
     }
 
-    stringify() {
-        return this.str;
-    }
-}
+cssSelector.prototype = Object.create(SelectorStr);
 
-class cssSelector extends SelectorStr {
-    element(value) {
+function cssSelector() {
+    SelectorStr.apply(this, arguments);
+
+    this.element = (value)=> {
+        debugger;
         errCheck('element', this.listSelector);
         this.listSelector.element = true;
         this.str += value;
         return this;
-    }
+    };
 
-    id(value) {
+    this.id = (value)=> {
         errCheck('id', this.listSelector);
         this.listSelector.id = true;
         this.str += `#${value}`;
         return this;
-    }
+    };
 
-    class(value) {
+    this.class = (value)=> {
         errCheck('class', this.listSelector);
         this.listSelector.class = true;
         this.str += `.${value}`;
         return this;
-    }
+    };
 
-    attr(value) {
+    this.attr = (value)=> {
         errCheck('attr', this.listSelector);
         this.listSelector.attr = true;
         this.str += `[${value}]`;
         return this;
-    }
+    };
 
-    pseudoClass(value) {
+    this.pseudoClass = (value)=> {
         errCheck('pseudoClass', this.listSelector);
         this.listSelector.pseudoClass = true;
         this.str += `:${value}`;
         return this;
-    }
+    };
 
-    pseudoElement(value) {
+    this.pseudoElement = (value)=> {
         errCheck('pseudoElement', this.listSelector);
         this.listSelector.pseudoElement = true;
         this.str += `::${value}`;
         return this;
-    }
+    };
 }
 
 function errCheck (elem, list) {
