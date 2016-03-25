@@ -136,29 +136,24 @@ const cssSelectorBuilder = {
     },
 
     combine: function(selector1, combinator, selector2) {
-        return new SelectorStr(selector1.stringify()+` ${combinator} `+selector2.stringify());
+        return new cssSelector(selector1.stringify()+` ${combinator} `+selector2.stringify());
     }
 };
 
-function SelectorStr(str) {
-    this.str = str||'';
-    this.listSelector = { element: false,
-                          id: false,
-                          class: false,
-                          attr: false,
-                          pseudoClass: false,
-                          pseudoElement: false };
+const cssSelector = function (str) {
+    this.str = str || '';
+    this.listSelector = {
+        element: false,
+        id: false,
+        class: false,
+        attr: false,
+        pseudoClass: false,
+        pseudoElement: false
+    };
 
-    this.stringify = function() { return this.str;};
-    }
-
-cssSelector.prototype = Object.create(SelectorStr);
-
-function cssSelector() {
-    SelectorStr.apply(this, arguments);
+    this.stringify = ()=> this.str;
 
     this.element = (value)=> {
-        debugger;
         errCheck('element', this.listSelector);
         this.listSelector.element = true;
         this.str += value;
@@ -199,7 +194,7 @@ function cssSelector() {
         this.str += `::${value}`;
         return this;
     };
-}
+};
 
 function errCheck (elem, list) {
     let x = false;
