@@ -257,7 +257,12 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-    return +num.toString().split('').reverse().join('');
+    num = num.toString();
+    let reversNum = '';
+    for(let x=num.length; x--;){
+        reversNum += num[x];
+    }
+    return reversNum;
 }
 
 
@@ -312,7 +317,7 @@ function isCreditCardNumber(ccn) {
  */
 function getDigitalRoot(num) {
     while(num>9) {
-        num = num.toString().split('').reduce((elem, elem1)=> (+elem) + (+elem1));
+        num = num.toString().split('').reduce((elem, elem1)=> (+elem)+(+elem1));
     }
     return num;
 }

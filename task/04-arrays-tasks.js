@@ -440,7 +440,7 @@ function sortCitiesArray(arr) {
  *           [0,0,0,0,1]]
  */
 function getIdentityMatrix(n) {
-    var matrix = [];
+    let matrix = [];
     new Array(n).fill(0).map((x, ind)=> matrix.push(new Array(n).fill(0).fill(1, ind, ind + 1)));
     return matrix;
 }
@@ -460,7 +460,7 @@ function getIdentityMatrix(n) {
  */
 function getIntervalArray(start, end) {
     //var array = new Array(end - start + 1).fill(start).map((x, ind, arr)=> x + ind);
-    return Array.from({length:end - start + 1},(x,ind)=> ind+start);
+    return Array.from({length:end - start+1},(x,ind)=> ind+start);
 }
 
 /**
@@ -509,7 +509,7 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-    let myMap = array.reduce((x, y)=> {
+    return array.reduce((x, y)=> {
         if(x.has(keySelector(y))){
             x.get(keySelector(y)).push(valueSelector(y))
         }else{
@@ -517,8 +517,6 @@ function group(array, keySelector, valueSelector) {
         }
         return x;
     }, new Map());
-    return myMap;
-
 }
 
 
