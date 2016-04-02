@@ -34,7 +34,29 @@
  *
  */
 function parseBankAccount(bankAccount) {
-    throw new Error('Not implemented');
+    let num = bankAccount.split('\n'),
+        numStr = '';
+    num = num.map((x)=> x = x.split(/(.{3})/).filter((x)=> x));
+
+    for(let x=0; x<9; x++) {
+        if(num[2][x]==='|_|') {
+            if(num[1][x]==='|_|') { numStr += 8; }
+            else if(num[1][x]==='|_ ') { numStr += 6; }
+            else { numStr += 0; }
+        }
+        else if(num[2][x]==='  |') {
+            if(num[1][x]==='|_|') { numStr += 4; }
+            else if(num[0][x]===' _ ') { numStr += 7; }
+            else { numStr += 1; }
+        }
+        else if(num[2][x]===' _|') {
+            if(num[1][x]==='|_|') { numStr +=9; }
+            else if(num[1][x]===' _|') { numStr +=3; }
+            else { numStr += 5; }
+        }
+        else { numStr += 2; }
+    }
+    return +numStr;
 }
 
 
@@ -63,7 +85,15 @@ function parseBankAccount(bankAccount) {
  *                                                                                                'characters.'
  */
 function* wrapText(text, columns) {
-    throw new Error('Not implemented');
+    let indSp = 0,
+        str = '';
+
+    while (text) {
+        str = text.substring(0, columns+1);
+        indSp = str.length<columns ? str.length : str.lastIndexOf(' ');
+        yield str.substring(0, indSp);
+        text = text.substring(indSp).trim();
+    }
 }
 
 
@@ -100,7 +130,51 @@ const PokerRank = {
 }
 
 function getPokerHandRank(hand) {
-    throw new Error('Not implemented');
+    let card = hand.map((x)=> {
+        if(x[0]==='J') { return x = 11; }
+        else if(x[0]==='Q') { return x = 12; }
+        else if(x[0]==='K') { return x = 13; }
+        else if(x[0]==='A') { return x = 14; }
+        else if(x[0]==='1') { return x = 10; }
+        else { return x = +x[0]; }
+    }).sort((a, b)=> a>b),
+        flush = hand.every((x, ind, arr)=> x[x.length-1]===arr[0][arr[0].length-1]),
+        equal = card.every((x, ind, arr)=> arr.indexOf(x)===arr.lastIndexOf(x));
+
+    if(flush) { return straightSearch(true); }
+    else if(equal) { return straightSearch(false); }
+    else { return equalCard() }
+
+    function straightSearch (boolFlush) {
+        let straight = card.every((x, ind, arr)=> {
+            if(ind===arr.length-1 && arr.indexOf(2)+1 && arr.indexOf(14)+1) {
+                x = 6;
+            }
+            return x===arr[0]+ind
+        });
+
+        if(straight) {
+            return  boolFlush ? PokerRank.StraightFlush : PokerRank.Straight;
+        }
+        else { return boolFlush ? PokerRank.Flush : PokerRank.HighCard; }
+    }
+
+    function equalCard() {
+        let cardsIden = card.filter((x, ind, arr)=> ind!==arr.indexOf(x) || ind!==arr.lastIndexOf(x)),
+            other = cardsIden.every((x, ind, arr)=> {
+                if(!ind || ind===arr[arr.length-1]) {
+                    return true;
+                }
+                return arr[1]===x;
+            });
+
+        if(cardsIden.length===4 && other) { return PokerRank.FourOfKind }
+        else if(cardsIden.length===5) { return PokerRank.FullHouse }
+        else if(cardsIden.length===3) { return PokerRank.ThreeOfKind }
+        else if(cardsIden.length===4) { return PokerRank.TwoPairs }
+        else if(cardsIden.length===2) { return PokerRank.OnePair }
+        else { return  PokerRank.HighCard }
+    }
 }
 
 
@@ -135,7 +209,42 @@ function getPokerHandRank(hand) {
  *    '+-------------+\n'
  */
 function* getFigureRectangles(figure) {
-   throw new Error('Not implemented');
+    let myFigure = figure.split('\n');
+
+    while(myFigure.length>2) {
+        let height = 0,
+            myStr = [''];
+
+        myStr[0] = parse(myStr)+'+';
+
+        for (let x=0; x<myFigure.length; x++) {
+            if(myFigure[x+1].indexOf('|')!==-1) {
+                myStr.push('|'+' '.repeat(myStr[0].length-2)+'|');
+                height++;
+            } else { break; }
+        }
+
+        myStr.push(myStr[0]);
+        yield myStr = myStr.join('\n')+'\n';
+        if(myFigure[0].length<2) {
+            myFigure.splice(0, height+1); }
+    }
+
+    function parse(str) {
+        if(myFigure[1].trim().length<myFigure[0].trim().length) {
+            myFigure.reverse();
+            myFigure.shift();
+        }
+        let inspectInd,
+            ind = myFigure[0].substring(myFigure[0].indexOf('+')+1).indexOf('+')+myFigure[0].indexOf('+')+1,
+            find = myFigure[1].substr(myFigure[1].length-myFigure[0].length+ind, 1);
+
+        str[0] += myFigure[0].match(/\+-+|\+/);
+        str[0] = str[0].replace(/-\+-/,'---');
+        inspectInd = find==='|' || find==='+';
+        myFigure[0] = myFigure[0].trim().substring(ind);
+        return inspectInd ? str : parse(str);
+    }
 }
 
 
