@@ -396,6 +396,8 @@ describe('07-yield-tasks', function() {
 
 
     it.optional('mergeSortedSequences should merge two sorted sequences into one sorted sequence', () => {
+        const ITEMS_COUNT = 500;
+        
         var odds = function* () {
                for(var i=1; true; i+=2) yield i;
             };
@@ -403,35 +405,45 @@ describe('07-yield-tasks', function() {
                for(var i=2; true; i+=2) yield i;
             };
         var expected = 1;
+        var count = 0;
         for(let value of tasks.mergeSortedSequences(odds, evens)) {
             assert.equal(
                 value,
                 expected++
             );
-            if (expected>1000) break;
+            count++;
+            if (count==ITEMS_COUNT) break;
         }
+        assert.equal(count, ITEMS_COUNT);
 
         var zero = function* () { yield 0; }
         expected = 0;
+        count = 0;
         for(let value of tasks.mergeSortedSequences(zero, evens)) {
             assert.equal(
                 value,
                 expected
             );
             expected +=2;
-            if (expected>500) break;
+            count++;
+            if (count == ITEMS_COUNT) break;
         }
+        assert.equal(count, ITEMS_COUNT);
+        
 
         var minus1 = function* () { yield -1; }
         expected = -1;
+        count = 0;
         for(let value of tasks.mergeSortedSequences(odds, minus1)) {
             assert.equal(
                 value,
                 expected
             );
             expected +=2;
-            if (expected>500) break;
+            count++;
+            if (count == ITEMS_COUNT) break;
         }
+        assert.equal(count, ITEMS_COUNT);
 
     });
 });
