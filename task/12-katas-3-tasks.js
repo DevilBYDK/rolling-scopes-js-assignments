@@ -28,7 +28,48 @@
  *   'NULL'      => false 
  */
 function findStringInSnakingPuzzle(puzzle, searchStr) {
-    throw new Error('Not implemented');
+    let path = Array.from({length:puzzle.length}, (x)=> x=[]),
+        letter = 0;
+
+    function search(x, y) {
+        for(let row = x || 0; row<puzzle.length; row++) {
+            for(let column = y || 0; column<puzzle[0].length; column++) {
+
+                if(letter===searchStr.length-1) { return true; }
+
+                if(searchStr[letter]===puzzle[row][column]) {
+
+                    let rowSearhR = puzzle[row][column+1]===searchStr[letter+1],
+                        rowSearhL = puzzle[row][column-1]===searchStr[letter+1],
+                        upSearh = puzzle[row-1] ? puzzle[row-1][column]===searchStr[letter+1] : false,
+                        downSearh = puzzle[row+1] ? puzzle[row+1][column]===searchStr[letter+1] : false;
+
+                    if(rowSearhR || rowSearhL || upSearh || downSearh) {
+
+                        let result = [];
+                        path[row][letter] = column;
+                        letter++;
+
+                        if(rowSearhR && path[row].indexOf(column+1)<0) { result.push(search(row, column+1)); }
+                        if(rowSearhL && path[row].indexOf(column-1)<0) { result.push(search(row, column-1)); }
+                        if(upSearh && path[row-1].indexOf(column)<0) { result.push(search(row-1, column)); }
+                        if(downSearh && path[row+1].indexOf(column)<0) { result.push(search(row+1, column)); }
+
+                        result = result.some((x)=> x===true);
+
+                        if(result) { return true; }
+
+                        path[row].pop();
+                        letter--;
+
+                    }
+                }
+                if(letter!==0) { return false; }
+            }
+        }
+        return false;
+    }
+    return search();
 }
 
 
@@ -45,7 +86,29 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  *    'abc' => 'abc','acb','bac','bca','cab','cba'
  */
 function* getPermutations(chars) {
-    throw new Error('Not implemented');
+    let myStr = chars.split(''),
+        len = myStr.length,
+        comb = myStr.reduce((x,y,ind)=> ind>0 ? x*ind : x, 1)/(len<3 ? 1 : len-2);
+
+    function replace(ind1, ind2) {
+        if(len>1) {
+            let letter = myStr[ind1];
+            ind2 = ind2 || ind1+1;
+            myStr[ind1] = myStr[ind2];
+            myStr[ind2] = letter;
+        }
+    }
+
+    for(let x=1; x<=len; x++) {
+        for(let y=comb; y--;) {
+            for (let z=1; z<len-1; z++) {
+                replace(z);
+                yield myStr.join('');
+            }
+        }
+        replace(0, x);
+        if(len<3) { yield myStr.join(''); }
+    }
 }
 
 
@@ -65,7 +128,18 @@ function* getPermutations(chars) {
  *    [ 1, 6, 5, 10, 8, 7 ] => 18  (buy at 1,6,5 and sell all at 10)
  */
 function getMostProfitFromStockQuotes(quotes) {
-    throw new Error('Not implemented');
+    let profit = 0,
+        maxPrice = quotes[quotes.length-1];
+
+    for (let x=quotes.length; x--;) {
+        if(quotes[x]>maxPrice) {
+            maxPrice = quotes[x];
+        }
+        else {
+            profit = profit+(maxPrice-quotes[x])
+        }
+    }
+    return profit;
 }
 
 
@@ -92,12 +166,32 @@ function UrlShortener() {
 UrlShortener.prototype = {
 
     encode: function(url) {
-        throw new Error('Not implemented');
+
+        let str = '';
+
+        for(let x=0; x<url.length; x++) {
+
+            str += this.urlAllowedChars.indexOf(url[x])<10
+                   ?'0'+this.urlAllowedChars.indexOf(url[x])
+                   :this.urlAllowedChars.indexOf(url[x]);
+            if(x%2 && x!==url.length-1) { str += ',';}
+        }
+        str = str.split(',').map((x)=> x = String.fromCharCode((+x)+20000));
+        return str.join('');
     },
-    
+
     decode: function(code) {
-        throw new Error('Not implemented');
-    } 
+        return code.split('').map((x)=> {
+                    x = ''+ (x.charCodeAt(0)-20000);
+                    if(x.length===3) { x = '0'+x; }
+                    if(x.length===2) {
+                        return x = this.urlAllowedChars[+x]
+                    }
+                    else {
+                        return x = this.urlAllowedChars[+x.slice(0, 2)] + this.urlAllowedChars [+x.slice(2)];
+                    }
+                }).join('');
+    }
 }
 
 
